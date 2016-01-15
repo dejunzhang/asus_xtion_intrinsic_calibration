@@ -268,7 +268,7 @@ int main(int argc, char **argv) {
     Pattern pattern = CHESSBOARD;
 
     cv::CommandLineParser parser(argc, argv,
-                                 "{help ||}{w||}{h||}{pt|chessboard|}{n|10|}{d|1000|}{s|1|}{o|out_camera_data.yml|}"
+                                 "{help ||}{w||}{h||}{pt|chessboard|}{n|15|}{d|3000|}{s|1|}{o|out_camera_data.yml|}"
                                          "{ir||}{op||}{oe||}{zt||}{a|1|}{p||}{v||}{V||}{su||}"
                                          "{@input_data|-1|}");
     if (parser.has("help")) {
@@ -277,7 +277,7 @@ int main(int argc, char **argv) {
     }
     boardSize.width = parser.get<int>("w");
     boardSize.height = parser.get<int>("h");
-    if (parser.has("pt")) {
+//    if (parser.has("pt")) {
         string val = parser.get<string>("pt");
         if (val == "circles")
             pattern = CIRCLES_GRID;
@@ -287,7 +287,7 @@ int main(int argc, char **argv) {
             pattern = CHESSBOARD;
         else
             return fprintf(stderr, "Invalid pattern type: must be chessboard or circles\n"), -1;
-    }
+//    }
     ir = parser.has("ir");
     squareSize = parser.get<float>("s");
     nframes = parser.get<int>("n");
@@ -303,6 +303,12 @@ int main(int argc, char **argv) {
         flags |= CALIB_FIX_PRINCIPAL_POINT;
     flipVertical = parser.has("v");
 //    if (parser.has("o"))
+    flags |= CALIB_FIX_K1;
+    flags |= CALIB_FIX_K2;
+    flags |= CALIB_FIX_K3;
+//    flags |= CALIB_FIX_K4;
+//    flags |= CALIB_FIX_K5;
+//    flags |= CALIB_FIX_K6;
     outputFilename = parser.get<string>("o");
     showUndistorted = parser.has("su");
     if (isdigit(parser.get<string>("@input_data")[0]))
